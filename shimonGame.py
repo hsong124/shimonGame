@@ -1,32 +1,42 @@
 import random
+import rtmidi_python as rtmidi_python
+import socket
 
 
+GESTURE_IP = "169.254.251.148"
+GESTURE_PORT = 30310
 
 
-def start():
+midi_in = rtmidi.MidiIn()
+start(midi_in)
+
+def start(midi_in):
+    midi_in.open_port(0)
     print("initial shimon gesture")
+
+
 
 def tutorial():
     correct = False
     while not correct:
-        print("1, 2, 3, 4") #actually have shimon play here not print, placeholder
-        #get user input here
-        if user == [1,2,3,4]:
-            print("correct gesture")
+        playNotes([1,2,3,4])
+        count = 0
+        userPlayed = []
+        while count < 4:
+            message, delta_time = midi_in.get_message()
+            if message:
+                count += 1
+                userPlayed.append(message)
+                #send message to shimon to play
+        if userPlayed == [1,2,3,4]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
+            correctGesture()
             correct = True
         else:
-            print("wrong gesture")
-    correct = False
-    while not correct:
-        print("4,3,2,1")
-        #get user input here
-        if user == [4,3,2,1]:
-            print("correct gesture")
-            correct = True
-        else:
-            print("wrong gesture")
+            wrongGesture()
     level1()
 
+
+#######################################################################
 def level1():
     #have to pass 3 times to get to level 2
     for j in range(3):
@@ -38,14 +48,31 @@ def level1():
         while not correct:
             #here shimon should play notes and then wait for input
             if user == notes:
-                print("correct gesture")
+                correctGesture()
                 correct = True
             else:
-                print("wrong gesture")
+                wrongGesture()
 
     level2()
 
 def level2():
     print("not done")
+#######################################################################
+'''
+Method where shimon plays notes, e.g. C, E, G, C
+Takes in array of numbers(notes)
+'''
+def playNotes(arr):
+    pass
 
+'''
+Method that makes shimon do the gesture indicating correct notes by the player
+'''
+def correctGesture():
+    pass
 
+'''
+Method that makes shimon do the gesture indicating incorrect notes by the player
+'''
+def wrongGesture():
+    pass
