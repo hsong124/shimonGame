@@ -1,9 +1,11 @@
 import random
 import rtmidi_python as rtmidi
 import socket
+import gestures
+
 #remake gestures in python
 #test connection with shimon
-#
+
 
 SHIMON_IP = "169.254.251.148"
 GESTURE_PORT = 30310
@@ -11,24 +13,20 @@ MUSIC_PORT = 51973
 #pedal inputs are : 48, 50, 52, 53
 #mididata 60 60
 #velocity between 0 - 127
+print("UDP target IP:", UDP_IP)
+print("UDP target port:", UDP_PORT)
+print("message:", MESSAGE)
 
-
-
-
-
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
 
 def start():
-
     print("initial shimon gesture")
     tutorial()
-
-
 
 def tutorial():
     correct = False
     while not correct:
-        playNotes([1,2,3,4])
-        print("shimon playes 1234")
+        playNotes([60,61,62,63])
         count = 0
         userPlayed = []
         while count < 8:
@@ -73,12 +71,16 @@ Method where shimon plays notes, e.g. C, E, G, C
 Takes in array of numbers(notes)
 '''
 def playNotes(arr):
-    pass
+    #need to check if valid arr
+    sock.sendto(bytes(arr, "utf-8"), (SHIMON_IP , MUSIC_PORT))
+    print("Shimon played notes:", arr)
 
 '''
 Method that makes shimon do the gesture indicating correct notes by the player
 '''
-def correctGesture():
+def correctGesture(sock):
+    message = gestures.headShakegood()
+    sock.sendto(bytes(arr, "utf-8"), (SHIMON_IP , GESTURE_PORT))
     print("shimon does good gesture")
 
 
@@ -87,6 +89,7 @@ Method that makes shimon do the gesture indicating incorrect notes by the player
 '''
 def wrongGesture():
     print("shimon does bad gesture")
+
 
 print("start")
 midi_in = rtmidi.MidiIn(b"input")
