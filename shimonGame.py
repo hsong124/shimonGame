@@ -1,18 +1,26 @@
 import random
-import rtmidi_python as rtmidi_python
+import rtmidi_python as rtmidi
 import socket
+#remake gestures in python
+#test connection with shimon
+#
 
-
-GESTURE_IP = "169.254.251.148"
+SHIMON_IP = "169.254.251.148"
 GESTURE_PORT = 30310
+MUSIC_PORT = 51973
+#pedal inputs are : 48, 50, 52, 53
+#mididata 60 60
+#velocity between 0 - 127
 
 
-midi_in = rtmidi.MidiIn()
-start(midi_in)
 
-def start(midi_in):
-    midi_in.open_port(0)
+
+
+
+def start():
+
     print("initial shimon gesture")
+    tutorial()
 
 
 
@@ -20,20 +28,22 @@ def tutorial():
     correct = False
     while not correct:
         playNotes([1,2,3,4])
+        print("shimon playes 1234")
         count = 0
         userPlayed = []
-        while count < 4:
+        while count < 8:
             message, delta_time = midi_in.get_message()
             if message:
                 count += 1
-                userPlayed.append(message)
-                #send message to shimon to play
-        if userPlayed == [1,2,3,4]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
+                if count % 2 == 1:
+                    userPlayed.append(message[1])
+                    print(message[1])
+        if userPlayed == [48,50,52,53]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
             correctGesture()
             correct = True
         else:
             wrongGesture()
-    level1()
+    print("finished tuturial")
 
 
 #######################################################################
@@ -69,10 +79,16 @@ def playNotes(arr):
 Method that makes shimon do the gesture indicating correct notes by the player
 '''
 def correctGesture():
-    pass
+    print("shimon does good gesture")
+
 
 '''
 Method that makes shimon do the gesture indicating incorrect notes by the player
 '''
 def wrongGesture():
-    pass
+    print("shimon does bad gesture")
+
+print("start")
+midi_in = rtmidi.MidiIn(b"input")
+midi_in.open_port(0)
+start()
