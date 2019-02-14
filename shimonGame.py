@@ -26,7 +26,7 @@ def start():
 def tutorial():
     correct = False
     while not correct:
-        playNotes([60,61,62,63])
+        playNotes([60,62,64,65])
         count = 0
         userPlayed = []
         while count < 8:
@@ -71,8 +71,8 @@ Method where shimon plays notes, e.g. C, E, G, C
 Takes in array of numbers(notes)
 '''
 def playNotes(arr):
-    #need to check if valid arr
-    sock.sendto(bytes(arr, "utf-8"), (SHIMON_IP , MUSIC_PORT))
+    for note in arr:
+        sock.sendto(bytes("/mididata" + str(note) + "110", "utf-8"), (SHIMON_IP , MUSIC_PORT))
     print("Shimon played notes:", arr)
 
 '''
