@@ -3,7 +3,7 @@ import rtmidi_python as rtmidi
 from pythonosc import udp_client
 import gestures
 import time
-
+import helper
 
 SHIMON_IP = "169.254.251.148"
 OWN_IP = "127.0.0.1"
@@ -29,13 +29,12 @@ def start():
 def tutorial():
     correct = False
     while not correct:
-        time.sleep(4)
-        playNotes([72,74,76,77])
+        time.sleep(2)
+        playNotes([72])
         count = 0
         userPlayed = []
-        while count < 8:
+        while count < 2:
             message, delta_time = midi_in.get_message()
-
             if message:
                 count += 1
                 if count % 2 == 1:
@@ -44,12 +43,89 @@ def tutorial():
                         playNotes([72])
                     if message[1] == 50:
                         playNotes([74])
-                    if message[1] == 42:
+                    if message[1] == 52:
                         playNotes([76])
                     if message[1] == 53:
                         playNotes([77])
                     time.sleep(.5)
-
+        if userPlayed == [48]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
+            correctGesture()
+            correct = True
+        else:
+            wrongGesture()
+    correct = False
+        while not correct:
+        time.sleep(2)
+        playNotes([72, 74])
+        count = 0
+        userPlayed = []
+        while count < 4:
+            message, delta_time = midi_in.get_message()
+            if message:
+                count += 1
+                if count % 2 == 1:
+                    userPlayed.append(message[1])
+                    if message[1] == 48:
+                        playNotes([72])
+                    if message[1] == 50:
+                        playNotes([74])
+                    if message[1] == 52:
+                        playNotes([76])
+                    if message[1] == 53:
+                        playNotes([77])
+                    time.sleep(.5)
+        if userPlayed == [48, 50]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
+            correctGesture()
+            correct = True
+        else:
+            wrongGesture()
+    correct = False
+        while not correct:
+        time.sleep(2)
+        playNotes([72,74,76])
+        count = 0
+        userPlayed = []
+        while count < 6:
+            message, delta_time = midi_in.get_message()
+            if message:
+                count += 1
+                if count % 2 == 1:
+                    userPlayed.append(message[1])
+                    if message[1] == 48:
+                        playNotes([72])
+                    if message[1] == 50:
+                        playNotes([74])
+                    if message[1] == 52:
+                        playNotes([76])
+                    if message[1] == 53:
+                        playNotes([77])
+                    time.sleep(.5)
+        if userPlayed == [48, 50, 52]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
+            correctGesture()
+            correct = True
+        else:
+            wrongGesture()
+    correct = False
+    while not correct:
+        time.sleep(2)
+        playNotes([72,74,76,77])
+        count = 0
+        userPlayed = []
+        while count < 8:
+            message, delta_time = midi_in.get_message()
+            if message:
+                count += 1
+                if count % 2 == 1:
+                    userPlayed.append(message[1])
+                    if message[1] == 48:
+                        playNotes([72])
+                    if message[1] == 50:
+                        playNotes([74])
+                    if message[1] == 52:
+                        playNotes([76])
+                    if message[1] == 53:
+                        playNotes([77])
+                    time.sleep(.5)
         if userPlayed == [48,50,52,53]: # 1,2,3,4 is just placeholder I don't know what message actually looks like
             correctGesture()
             correct = True
@@ -155,71 +231,6 @@ def level3():
         else:
             wrongGesture()
     print("Finished level3. You win!")
-
-##########################Helper methods####################################
-'''
-Method where shimon plays notes, e.g. C, E, G, C
-Takes in array of numbers(notes)
-'''
-def playNotes(arr):
-    for note in arr:
-        clientmusic.send_message("/mididata", [note,  110])
-        time.sleep(.5)
-    print("Shimon played notes:", arr)
-
-'''
-Method that makes shimon do the gesture indicating correct notes by the player
-'''
-def correctGesture():
-    clientGest.send_message("0", "good")
-    time.sleep(3)
-    print("shimon does good gesture")
-
-
-'''
-Method that makes shimon do the gesture indicating incorrect notes by the player
-'''
-def wrongGesture():
-    clientGest.send_message("1", "bad")
-    time.sleep(3)
-    print("shimon does bad gesture")
-
-def chooseNotes(lower, upper):
-    notes = []
-    for i in range(4):
-        note = random.randint(lower, upper)
-        while note in notes:
-            note = random.randint(lower, upper)
-        notes.append(note)
-    notes.sort()
-    return notes
-
-def returnNotes(notes, length):
-    score = []
-    for i in range(length):
-        j = random.randint(0,3)
-        score.append(notes[j])
-    for note in notes:
-        if note not in score:
-            score.append(note)
-    return score
-
-def getMod(notes, score):
-    first = notes[0]
-    second = notes[1]
-    third = notes[2]
-    fourth = notes[3]
-    mod = []
-    for note in score:
-        if note == first:
-            mod.append(one)
-        elif note == second:
-            mod.append(two)
-        elif note == third:
-            mod.append(three)
-        elif note == fourth:
-            mod.append(four)
-    return mod
 
 
 #########################################MAIN METHOD########################
