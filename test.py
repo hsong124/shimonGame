@@ -5,7 +5,7 @@ import gestures
 import time
 #remake gestures in python
 #test connection with shimon
-SHIMON_IP = "169.254.251.148"
+SHIMON_IP = "169.254.159.122"
 OWN_IP = "127.0.0.1"
 MUSIC_PORT = 51973
 GESTURE_PORT = 3002

@@ -4,9 +4,13 @@ Method where shimon plays notes, e.g. C, E, G, C
 Takes in array of numbers(notes)
 '''
 def playNotes(arr):
+    count = 0
     for note in arr:
+        if count % 4 == 0:
+            bounceGesture()
         clientmusic.send_message("/mididata", [note,  110])
         time.sleep(.5)
+        count+= 1;
     print("Shimon played notes:", arr)
 
 '''
@@ -14,8 +18,9 @@ Method that makes shimon do the gesture indicating correct notes by the player
 '''
 def correctGesture():
     clientGest.send_message("0", "good")
-    time.sleep(3)
     print("shimon does good gesture")
+    time.sleep(3)
+
 
 
 '''
@@ -23,8 +28,21 @@ Method that makes shimon do the gesture indicating incorrect notes by the player
 '''
 def wrongGesture():
     clientGest.send_message("1", "bad")
-    time.sleep(3)
     print("shimon does bad gesture")
+    time.sleep(3)
+
+def startGesture():
+    clientGest.send_message("2", "start")
+    print("shimon does start gesture")
+    time.sleep(1)
+
+def endGesture():
+    clientGest.send_message("3", "start")
+    print("shimon does start gesture")
+    time.sleep(1)
+
+def bounceGesture():
+    clientGest.send_message("4", "bounce")
 
 def chooseNotes(lower, upper):
     notes = []
