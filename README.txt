@@ -1,11 +1,15 @@
-This is a game to be played with shimon using a windows laptop to run and XXXXX midi kickpad.
+This is a game to be played with shimon using a windows laptop to run and midi kickpad.
 
+Demo:
+    http://www.youtube.com/watch?v=TD-9c9Q9MoY
+    http://www.youtube.com/watch?v=kuIh90APppo
+    
 Requirements to play:
 - loopMidi on windows
 - max/msp
 - python 3
 - shimon
-- XXXX Kickpad
+- midi Kickpad
 
 Setup:
 - Download repository
@@ -23,6 +27,10 @@ Content:
 -Helper.maxpat is max script to send gestures to zk.headModel.maxpat
 -zk.headModel.maxpat is script to send head commands to shimon
 
+Why:
+- Made for fun
+- Cool way to practice listening and memory skills
+   
 Debug:
 - check ports
 - unplug and replug midi kickpad
